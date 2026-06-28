@@ -1,7 +1,7 @@
-import bcrypt from 'bcryptjs';
-import { prisma } from '../../lib/prisma';
-import { RegisterUserPayload } from './user.interface';
-import config from '../../config';
+import bcrypt from "bcryptjs";
+import { prisma } from "../../lib/prisma";
+import { RegisterUserPayload } from "./user.interface";
+import config from "../../config";
 
 const registerUserIntoDB = async (payload: RegisterUserPayload) => {
   const { name, email, password, profilePhoto } = payload;
@@ -12,7 +12,7 @@ const registerUserIntoDB = async (payload: RegisterUserPayload) => {
     },
   });
   if (isUserExist) {
-    throw new Error('User with this email already exists');
+    throw new Error("User with this email already exists");
   }
 
   const hashedPassword = await bcrypt.hash(
@@ -54,6 +54,23 @@ const registerUserIntoDB = async (payload: RegisterUserPayload) => {
   return user;
 };
 
+const getMyProfileFromDB = async (userId: string) => {
+  const user = await prisma.user.findUniqueOrThrow({
+    where: {
+      id: userId,
+    },
+    omit: {
+      password: true,
+    },
+    include: {
+      profile: true,
+    },
+  });
+
+  return user;
+};
+
 export const userService = {
   registerUserIntoDB,
+  getMyProfileFromDB,
 };
