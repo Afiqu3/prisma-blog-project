@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { JwtPayload } from "jsonwebtoken";
-import { Role } from "../../../generated/prisma/enums";
-import { catchAsync } from "../../utils/catchAsync";
-import { jwtUtils } from "../../utils/jwt";
-import config from "../../config";
-import { prisma } from "../../lib/prisma";
+import { Role } from "../../generated/prisma/enums";
+import { catchAsync } from "../utils/catchAsync";
+import { jwtUtils } from "../utils/jwt";
+import config from "../config";
+import { prisma } from "../lib/prisma";
 
 declare global {
   namespace Express {
@@ -26,6 +26,7 @@ export const auth = (...requiredRoles: Role[]) => {
       : req.headers.authorization?.startsWith("Bearer ")
       ? req.headers.authorization?.split(" ")[1]
       : req.headers.authorization;
+
 
     if (!token) {
       throw new Error(
