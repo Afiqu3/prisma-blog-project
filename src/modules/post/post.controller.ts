@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from 'express';
-import { catchAsync } from '../../utils/catchAsync';
-import { sendResponse } from '../../utils/sendResponse';
-import { postService } from './post.service';
-import httpStatus from 'http-status';
+import { NextFunction, Request, Response } from "express";
+import { catchAsync } from "../../utils/catchAsync";
+import { sendResponse } from "../../utils/sendResponse";
+import { postService } from "./post.service";
+import httpStatus from "http-status";
 
 const createPost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -15,7 +15,7 @@ const createPost = catchAsync(
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
-      message: 'Post Created SuccessFully',
+      message: "Post Created SuccessFully",
       data: result,
     });
   },
@@ -23,12 +23,13 @@ const createPost = catchAsync(
 
 const getAllPosts = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await postService.getAllPostsFromDB();
+    const query = req.query;
+    const result = await postService.getAllPostsFromDB(query);
 
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: 'Posts retrieved successfully',
+      message: "Posts retrieved successfully",
       data: result,
     });
   },
@@ -42,7 +43,7 @@ const getPostById = catchAsync(
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: 'Post retrieved successfully',
+      message: "Post retrieved successfully",
       data: result,
     });
   },
@@ -57,7 +58,7 @@ const getMyPosts = catchAsync(
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: 'My posts retrieved successfully',
+      message: "My posts retrieved successfully",
       data: result,
     });
   },
@@ -66,12 +67,12 @@ const getMyPosts = catchAsync(
 const updatePost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const authorId = req.user?.id;
-    const isAdmin = req.user?.role === 'ADMIN';
+    const isAdmin = req.user?.role === "ADMIN";
 
     const postId = req.params.postId;
 
     if (!postId) {
-      throw new Error('Post Id Required In Params');
+      throw new Error("Post Id Required In Params");
     }
 
     const payload = req.body;
@@ -86,7 +87,7 @@ const updatePost = catchAsync(
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: 'Post updated successfully',
+      message: "Post updated successfully",
       data: result,
     });
   },
@@ -95,11 +96,11 @@ const updatePost = catchAsync(
 const deletePost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const authorId = req.user?.id;
-    const isAdmin = req.user?.role === 'ADMIN';
+    const isAdmin = req.user?.role === "ADMIN";
 
     const postId = req.params.postId;
     if (!postId) {
-      throw new Error('Post Id Required In Params');
+      throw new Error("Post Id Required In Params");
     }
 
     await postService.deletePostInDB(
@@ -111,7 +112,7 @@ const deletePost = catchAsync(
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: 'Post deleted successfully',
+      message: "Post deleted successfully",
       data: null,
     });
   },
@@ -124,7 +125,7 @@ const getPostStats = catchAsync(
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: 'Post stats retrieved successfully',
+      message: "Post stats retrieved successfully",
       data: result,
     });
   },
