@@ -8,6 +8,7 @@ import { postRouter } from "./modules/post/post.route";
 import { commentRouter } from "./modules/comment/comment.route";
 import { notFound } from "./middlewares/notFound";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
+import { subscriptionRouter } from "./modules/subscription/subscription.route";
 // import httpStatus from "http-status";
 
 const app: Application = express();
@@ -31,6 +32,7 @@ app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/comments", commentRouter);
+app.use("/api/subscription", subscriptionRouter);
 
 app.use(notFound);
 
